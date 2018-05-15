@@ -7,4 +7,5 @@ bike  | ride_bike
 
 
 bike --> working? <-- true/false
+
 docking_station --> release_bike <-- ride_bike
