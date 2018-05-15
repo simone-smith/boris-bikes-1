@@ -1,3 +1,5 @@
+The FUNCTIONAL REPRESENTATION of the model splits the domain model into Object an Messages. Objects are NOUNS and Messages are VERBS:
+
 Objects  | Messages
 ------------- | -------------
 Person  | ?
@@ -6,6 +8,7 @@ docking_station  | release_bike
 bike  | ride_bike
 
 
-bike --> working? <-- true/false
+This is the DOMAIN MODEL, it's an abstract representation of the Objects within the system:
 
-docking_station --> release_bike <-- ride_bike
+bike <-- working? --> true/false<br>
+docking_station <-- release_bike --> ride_bike
