@@ -1,7 +1,7 @@
 require_relative 'Bike'
 
 class DockingStation
-attr_reader :bike
+attr_reader :bikes
 
 	def release_bike
 		fail 'No bikes available' unless @bike
