@@ -1,6 +1,16 @@
 require 'docking_station'
 
 describe DockingStation do
+	describe 'initialization' do
+		subject { DockingStation.new } # why do we need this line?
+		let(:bike) { Bike.new } # how is this different to typing Bike.new on lines 9 and 11?
+	  it 'defaults capacity' do
+	    described_class::DEFAULT_CAPACITY.times do
+	      subject.dock(bike)
+	    end
+	    expect{ subject.dock(bike) }.to raise_error 'Docking station full'
+	  end
+	end
 
 	describe '#dock' do
 		it 'responds to bike' do
@@ -9,25 +19,23 @@ describe DockingStation do
 
 		it 'docks something' do
 			bike = Bike.new
-			expect(subject.dock(bike)).to eq bike
-		end
-
-		it 'returns docked bikes' do
-			bike = Bike.new
 			subject.dock(bike)
 			expect(subject.bikes.last).to eq bike
 		end
 
-
 		it 'raises an error when the dock is full' do
-			DockingStation::DEFAULT_CAPACITY.times { subject.dock(Bike.new) }
-			expect { subject.dock Bike.new }.to raise_error 'Docking station full'
+			subject.capacity.times { subject.dock(Bike.new) }
+			expect{ subject.dock Bike.new }.to raise_error 'Docking station full'
+		end
+
+		it 'has a default capacity' do
+			expect(subject.capacity).to eq DockingStation::DEFAULT_CAPACITY
 		end
 	end
 
 	describe '#release_bike' do
 		it 'raises an error when there are no bikes available' do
-			expect { subject.release_bike }.to raise_error 'No bikes available'
+			expect{ subject.release_bike }.to raise_error 'No bikes available'
 		end
 
 		it 'releases a bike when there is one available' do
