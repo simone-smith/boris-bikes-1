@@ -2,6 +2,7 @@ require 'docking_station'
 
 describe DockingStation do
 
+
 	describe '#dock' do
 		it 'responds to bike' do
 			expect(DockingStation.new).to respond_to(:bikes)

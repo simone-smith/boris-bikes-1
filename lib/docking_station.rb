@@ -11,6 +11,7 @@ class DockingStation
 		fail 'No bikes available' if @bikes.empty?
 		@bikes.pop
 	end
+	
 
 	def dock(bike)
 		fail 'Docking station full' if @bikes.count >= 20
