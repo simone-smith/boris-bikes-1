@@ -1,9 +1,11 @@
 require 'docking_station'
 
 describe DockingStation do
+
+	let(:bike) { double :bike }
+
 	describe 'initialization' do
 		subject { DockingStation.new } # why do we need this line?
-		let(:bike) { Bike.new } # how is this different to typing Bike.new on lines 9 and 11?
 	  it 'defaults capacity' do
 	    described_class::DEFAULT_CAPACITY.times do
 	      subject.dock(bike)
@@ -14,18 +16,17 @@ describe DockingStation do
 
 	describe '#dock' do
 		it 'responds to bike' do
-			expect(DockingStation.new).to respond_to(:bikes)
+			expect(subject).to respond_to(:bikes)
 		end
 
 		it 'docks something' do
-			bike = Bike.new
 			subject.dock(bike)
 			expect(subject.bikes.last).to eq bike
 		end
 
 		it 'raises an error when the dock is full' do
-			subject.capacity.times { subject.dock(Bike.new) }
-			expect{ subject.dock Bike.new }.to raise_error 'Docking station full'
+			subject.capacity.times { subject.dock bike }
+			expect { subject.dock bike }.to raise_error 'Docking station full'
 		end
 
 		it 'has a default capacity' do
@@ -39,20 +40,25 @@ describe DockingStation do
 		end
 
 		it 'releases a bike when there is one available' do
-			bike = Bike.new
+			# allow(bike).to receive(:broken?).and_return(@broken)
+			bike = double(:bike, broken?: false)
 			subject.dock(bike)
 			expect(subject.release_bike).to eq bike
 		end
 	end
 
 	it 'gets a bike and expects it to be working' do
-		bike = Bike.new
+		# allow(bike).to receive(:working?).and_return(true)
+		# allow(bike).to receive(:broken?).and_return(@broken)
+		bike = double(:bike, broken?: @broken, working?: true)
 		subject.dock(bike)
 		expect(subject.release_bike).to be_working
 	end
 
 	it 'does not release a broken bike' do
-		bike = Bike.new
+		# allow(bike).to receive(:report_broken).and_return(@broken = true)
+		# allow(bike).to receive(:broken?).and_return(@broken)
+		bike = double(:bike, broken?: true, report_broken: @broken)
 		bike.report_broken
 		subject.dock(bike)
 		expect{ subject.release_bike }.to raise_error 'No working bikes available'
